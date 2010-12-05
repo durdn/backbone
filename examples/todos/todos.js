@@ -151,9 +151,9 @@ $(function(){
 
     checkPage: function(num) {
       if (this.model.get('page') != parseInt(num)) {
-        this.$('.todo').hide();
+        $(this.el).hide();
       } else {
-        this.$('.todo').show();
+        $(this.el).show();
       }
     },
 
