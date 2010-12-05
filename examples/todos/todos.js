@@ -145,7 +145,14 @@ $(function(){
 
     // Toggle the `"done"` state of the model.
     toggleDone: function() {
-      this.model.toggleDone();
+      if (this.model.get('status') == 'done') {
+        this.model.toggleOpen();
+        return;
+      } 
+      if (this.model.get('status') == 'open') {
+        this.model.toggleDone();
+        return;
+      } 
     },
 
     // TogglePartiallyDone the `"done"` state of the model.
