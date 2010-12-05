@@ -1,10 +1,26 @@
-// An example Backbone application contributed by
-// [Jérôme Gravel-Niquet](http://jgn.me/). This demo uses a simple
+// An implementation of the Auto-focus Time Management System
+// 
+// Original todo demo by [Jérôme Gravel-Niquet](http://jgn.me/). 
+// This demo uses a simple 
 // [LocalStorage adapter](backbone-localstorage.html)
 // to persist Backbone models within your browser.
 
 // Load the application once the DOM is ready, using `jQuery.ready`:
 $(function(){
+
+  // Page Model
+  // ----------
+
+  // Our basic **Page** model has `num`
+  window.Page = Backbone.Model.extend({
+
+    // Ensure that each page created has `num`
+    initialize: function() {
+      if (!this.get("num")) {
+        this.set({"num": 1});
+      }
+    }
+  });
 
   // Todo Model
   // ----------
@@ -19,6 +35,9 @@ $(function(){
     initialize: function() {
       if (!this.get("content")) {
         this.set({"content": this.EMPTY});
+      }
+      if (!this.get("page")) {
+        this.set({"page": 1});
       }
     },
 
@@ -44,6 +63,36 @@ $(function(){
     }
 
   });
+
+  // Page Collection
+  // ---------------
+
+  // The collection of pages is backed by *localStorage* instead of a remote
+  // server.
+  window.PageList = Backbone.Collection.extend({
+
+    // Reference to this collection's model.
+    model: Page,
+
+    // Save all of the todo items under the `"todos"` namespace.
+    localStorage: new Store("pages"),
+
+    // We keep the Pages in sequential order, despite being saved by unordered
+    // GUID in the database. This generates the next order number for new items.
+    nextOrder: function() {
+      if (!this.length) return 1;
+      return this.last().get('order') + 1;
+    },
+
+    // Pages are sorted by their original insertion order.
+    comparator: function(page) {
+      return page.get('order');
+    }
+
+  });
+
+  // Create our global collection of **Todos**.
+  window.Pages = new PageList;
 
   // Todo Collection
   // ---------------
@@ -71,6 +120,11 @@ $(function(){
     // Filter down the list to only todo items that are still not finished.
     remaining: function() {
       return this.filter(function(todo){ return (todo.get('status') != 'done' && todo.get('status') != 'discarded'); });
+    },
+
+    // Returns the number of pages needed so far
+    numPages: function () {
+        return Math.ceil((Todos.length+1)/3);
     },
 
     // We keep the Todos in sequential order, despite being saved by unordered
@@ -132,7 +186,8 @@ $(function(){
     // we use `jQuery.text` to set the contents of the todo item.
     setContent: function() {
       var content = this.model.get('content');
-      this.$('.todo-content').text(content);
+      var page = this.model.get('page');
+      this.$('.todo-content').text(content + ' [' + page + ']');
       this.input = this.$('.todo-input');
       this.input.bind('blur', this.close);
       this.input.val(content);
@@ -223,12 +278,17 @@ $(function(){
       _.bindAll(this, 'addOne', 'addAll', 'render');
 
       this.input    = this.$("#new-todo");
+      this.currentPage    = 1;
 
       Todos.bind('add',     this.addOne);
       Todos.bind('refresh', this.addAll);
       Todos.bind('all',     this.render);
 
       Todos.fetch();
+      Pages.fetch();
+      if (Pages.length == 0) {
+        Pages.create({num:1, order:1});
+      }
     },
 
     // Re-rendering the App just means refreshing the statistics -- the rest
@@ -239,7 +299,8 @@ $(function(){
         total:      Todos.length,
         done:       Todos.done().length,
         remaining:  Todos.remaining().length,
-        discarded:  Todos.discarded().length
+        discarded:  Todos.discarded().length,
+        page:       this.currentPage + '/' + Todos.numPages()
       }));
     },
 
@@ -260,7 +321,8 @@ $(function(){
       return {
         content: this.input.val(),
         order:   Todos.nextOrder(),
-        status:    'open',
+        status:  'open',
+        page:    Todos.numPages()
       };
     },
 

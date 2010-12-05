@@ -213,6 +213,9 @@ html {
       font-weight: bold;
       color: #333333;
     }
+  #todo-stats .page {
+    float: right;
+  }
   #todo-stats .todo-clear {
     float: right;
   }
