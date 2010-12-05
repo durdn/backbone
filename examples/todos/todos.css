@@ -139,6 +139,10 @@ html {
     text-decoration: line-through;
     color: #777777;
   }
+  #todo-list .discarded .todo-content {
+    text-decoration: underline;
+    background-color: #ffff00;
+  }
   #todo-list .todo-destroy {
     position: absolute;
     right: 5px;

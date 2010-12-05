@@ -27,6 +27,11 @@ $(function(){
       this.save({done: !this.get("done")});
     },
 
+    // Toggle the `done` state of this todo item.
+    toggleDiscarded: function() {
+      this.save({discarded: !this.get("discarded")});
+    },
+
     // Remove this Todo from *localStorage* and delete its view.
     clear: function() {
       this.destroy();
@@ -47,6 +52,11 @@ $(function(){
 
     // Save all of the todo items under the `"todos"` namespace.
     localStorage: new Store("todos"),
+
+    // Filter down the list of all todo items that are finished.
+    discarded: function() {
+      return this.filter(function(discarded){ return todo.get('discarded'); });
+    },
 
     // Filter down the list of all todo items that are finished.
     done: function() {
@@ -89,7 +99,8 @@ $(function(){
 
     // The DOM events specific to an item.
     events: {
-      "click .check"              : "togglePartiallyDone",
+      "dblclick .check"           : "toggleDiscarded",
+      //"click .check"              : "togglePartiallyDone",
       "dblclick div.todo-content" : "edit",
       "click span.todo-destroy"   : "clear",
       "keypress .todo-input"      : "updateOnEnter"
@@ -121,6 +132,11 @@ $(function(){
       this.input.val(content);
     },
 
+    // Toggle the `"discarded"` state of the model.
+    toggleDiscarded: function() {
+      this.model.toggleDiscarded();
+    },
+
     // Toggle the `"done"` state of the model.
     toggleDone: function() {
       this.model.toggle();
@@ -132,7 +148,8 @@ $(function(){
       this.collection.create({
         content: this.model.get('content'),
         order:   Todos.nextOrder(),
-        done:    false
+        done:    false,
+        discarded: false
       });
       // We toggle it's status
       this.model.toggle();
@@ -230,7 +247,8 @@ $(function(){
       return {
         content: this.input.val(),
         order:   Todos.nextOrder(),
-        done:    false
+        done:    false,
+        discarded: false
       };
     },
 
