@@ -149,6 +149,14 @@ $(function(){
       this.input.val(content);
     },
 
+    checkPage: function(num) {
+      if (this.model.get('page') != parseInt(num)) {
+        this.$('.todo').hide();
+      } else {
+        this.$('.todo').show();
+      }
+    },
+
     // Toggle the `"discarded"` state of the model.
     toggleDiscarded: function() {
       this.model.toggleDiscarded();
@@ -309,4 +317,22 @@ $(function(){
   // Finally, we kick things off by creating the **App**.
   window.App = new AppView;
 
+  window.PageController = Backbone.Controller.extend({
+
+    routes: {
+      "p:num":        "pageNum",  // #p3
+    },
+
+    pageNum: function(num) {
+      App.currentPage = num;
+      App.render();
+      Todos.each(function(todo) {
+        todo.view.checkPage(num);
+      });
+    }
+  });
+
+  window.Page = new PageController;
+
+  Backbone.history.start();
 });
