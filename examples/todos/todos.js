@@ -89,7 +89,7 @@ $(function(){
 
     // The DOM events specific to an item.
     events: {
-      "click .check"              : "toggleDone",
+      "click .check"              : "togglePartiallyDone",
       "dblclick div.todo-content" : "edit",
       "click span.todo-destroy"   : "clear",
       "keypress .todo-input"      : "updateOnEnter"
@@ -123,6 +123,18 @@ $(function(){
 
     // Toggle the `"done"` state of the model.
     toggleDone: function() {
+      this.model.toggle();
+    },
+
+    // TogglePartiallyDone the `"done"` state of the model.
+    togglePartiallyDone: function() {
+      // We re-append the item at the bottom of the list
+      this.collection.create({
+        content: this.model.get('content'),
+        order:   Todos.nextOrder(),
+        done:    false
+      });
+      // We toggle it's status
       this.model.toggle();
     },
 
@@ -204,7 +216,7 @@ $(function(){
     // Add a single todo item to the list by creating a view for it, and
     // appending its element to the `<ul>`.
     addOne: function(todo) {
-      var view = new TodoView({model: todo});
+      var view = new TodoView({model: todo, collection: Todos});
       this.$("#todo-list").append(view.render().el);
     },
 
