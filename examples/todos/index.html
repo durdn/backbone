@@ -69,8 +69,11 @@
     <script type="text/template" id="stats-template">
       <% if (total) { %>
         <span class="todo-count">
+          <span class="number"><%= total %></span> items. 
           <span class="number"><%= remaining %></span>
-          <span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
+          <span class="word"> left.</span>
+          <span class="number"><%= discarded %></span>
+          <span class="word"> discarded.</span>
         </span>
       <% } %>
       <% if (done) { %>

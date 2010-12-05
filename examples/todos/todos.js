@@ -55,7 +55,7 @@ $(function(){
 
     // Filter down the list of all todo items that are finished.
     discarded: function() {
-      return this.filter(function(discarded){ return todo.get('discarded'); });
+      return this.filter(function(todo){ return todo.get('discarded'); });
     },
 
     // Filter down the list of all todo items that are finished.
@@ -226,7 +226,8 @@ $(function(){
       this.$('#todo-stats').html(this.statsTemplate({
         total:      Todos.length,
         done:       Todos.done().length,
-        remaining:  Todos.remaining().length
+        remaining:  Todos.remaining().length,
+        discarded:  Todos.discarded().length
       }));
     },
 
