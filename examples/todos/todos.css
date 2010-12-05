@@ -62,7 +62,7 @@ html {
 }
   #create-todo input {
     width: 466px;
-    font-size: 24px;
+    font-size: 18px;
     font-family: inherit;
     line-height: 1.4em;
     border: 0;
@@ -89,9 +89,9 @@ html {
   margin-top: 10px;
 }
   #todo-list li {
-    padding: 12px 20px 11px 0;
+    padding: 8px 20px 7px 0;
     position: relative;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 1.1em;
     border-bottom: 1px solid #cccccc;
   }
@@ -116,7 +116,7 @@ html {
     }
     #todo-list .editing input {
       width: 444px;
-      font-size: 24px;
+      font-size: 18px;
       font-family: inherit;
       margin: 0;
       line-height: 1.6em;
@@ -131,7 +131,7 @@ html {
     }
   #todo-list .check {
     position: relative;
-    top: 9px;
+    top: 5px;
     margin: 0 10px 0 7px;
     float: left;
   }
@@ -146,7 +146,7 @@ html {
   #todo-list .todo-destroy {
     position: absolute;
     right: 5px;
-    top: 14px;
+    top: 8px;
     display: none;
     cursor: pointer;
     width: 20px;
@@ -162,7 +162,7 @@ html {
   #todo-list .todo-discard {
     position: absolute;
     right: 30px;
-    top: 14px;
+    top: 8px;
     display: none;
     cursor: pointer;
     width: 20px;
@@ -178,7 +178,7 @@ html {
   #todo-list .todo-readd {
     position: absolute;
     right: 55px;
-    top: 14px;
+    top: 8px;
     display: none;
     cursor: pointer;
     width: 20px;
