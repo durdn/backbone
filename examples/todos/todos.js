@@ -8,20 +8,6 @@
 // Load the application once the DOM is ready, using `jQuery.ready`:
 $(function(){
 
-  // Page Model
-  // ----------
-
-  // Our basic **Page** model has `num`
-  window.Page = Backbone.Model.extend({
-
-    // Ensure that each page created has `num`
-    initialize: function() {
-      if (!this.get("num")) {
-        this.set({"num": 1});
-      }
-    }
-  });
-
   // Todo Model
   // ----------
 
@@ -63,36 +49,6 @@ $(function(){
     }
 
   });
-
-  // Page Collection
-  // ---------------
-
-  // The collection of pages is backed by *localStorage* instead of a remote
-  // server.
-  window.PageList = Backbone.Collection.extend({
-
-    // Reference to this collection's model.
-    model: Page,
-
-    // Save all of the todo items under the `"todos"` namespace.
-    localStorage: new Store("pages"),
-
-    // We keep the Pages in sequential order, despite being saved by unordered
-    // GUID in the database. This generates the next order number for new items.
-    nextOrder: function() {
-      if (!this.length) return 1;
-      return this.last().get('order') + 1;
-    },
-
-    // Pages are sorted by their original insertion order.
-    comparator: function(page) {
-      return page.get('order');
-    }
-
-  });
-
-  // Create our global collection of **Todos**.
-  window.Pages = new PageList;
 
   // Todo Collection
   // ---------------
@@ -285,10 +241,6 @@ $(function(){
       Todos.bind('all',     this.render);
 
       Todos.fetch();
-      Pages.fetch();
-      if (Pages.length == 0) {
-        Pages.create({num:1, order:1});
-      }
     },
 
     // Re-rendering the App just means refreshing the statistics -- the rest
