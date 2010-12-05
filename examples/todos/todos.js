@@ -183,6 +183,13 @@ $(function(){
         status:    'open',
         page:    Todos.numPages()
       });
+
+      if (this.collection.numPages() != this.collection.app.currentPage) {
+        last = this.collection.last();
+        last.view.$('.todo-content').text('entry re-added on last page (' + this.collection.numPages() + ') since this is full');
+        last.view.$('.todo-content').css('background-color','yellow');
+        $(last.view.el).delay(3000).fadeOut('slow', function() {last.view.render();});
+      } 
       // We toggle it's status
       this.model.toggleDone();
     },
@@ -244,6 +251,7 @@ $(function(){
 
       this.input    = this.$("#new-todo");
       this.currentPage    = 1;
+      Todos.app = this;
 
       Todos.bind('add',     this.addOne);
       Todos.bind('refresh', this.addAll);
