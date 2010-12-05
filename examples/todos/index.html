@@ -2,7 +2,7 @@
 <html>
 
   <head>
-    <title>Backbone Demo: Todos</title>
+    <title>Auto-focus System</title>
     <link href="todos.css" media="all" rel="stylesheet" type="text/css"/>
     <script src="../../test/vendor/json2.js"></script>
     <script src="../../test/vendor/jquery-1.4.2.js"></script>
@@ -19,7 +19,7 @@
     <div id="todoapp">
 
       <div class="title">
-        <h1>Todos</h1>
+        <h1>Auto-focus System</h1>
       </div>
 
       <div class="content">
@@ -57,6 +57,7 @@
         <div class="display">
           <input class="check" type="checkbox" <%= status == 'done' ? 'checked="checked"' : '' %> />
           <div class="todo-content"></div>
+          <span class="todo-readd"></span>
           <span class="todo-discard"></span>
           <span class="todo-destroy"></span>
         </div>

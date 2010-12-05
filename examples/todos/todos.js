@@ -104,7 +104,8 @@ $(function(){
 
     // The DOM events specific to an item.
     events: {
-      "click .check"              : "togglePartiallyDone",
+      "click .check"              : "toggleDone",
+      "click span.todo-readd"     : "togglePartiallyDone",
       "click span.todo-discard"   : "toggleDiscarded",
       "dblclick div.todo-content" : "edit",
       "click span.todo-destroy"   : "clear",
