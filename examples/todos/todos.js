@@ -143,7 +143,7 @@ $(function(){
     setContent: function() {
       var content = this.model.get('content');
       var page = this.model.get('page');
-      this.$('.todo-content').text(content + ' [' + page + ']');
+      this.$('.todo-content').text(content);
       this.input = this.$('.todo-input');
       this.input.bind('blur', this.close);
       this.input.val(content);
@@ -293,7 +293,15 @@ $(function(){
     // persisting it to *localStorage*.
     createOnEnter: function(e) {
       if (e.keyCode != 13) return;
-      Todos.create(this.newAttributes());
+      if (Todos.numPages() != this.currentPage) {
+        Todos.create(this.newAttributes());
+        last = Todos.last();
+        last.view.$('.todo-content').text('entry added to last page (' + Todos.numPages() + ') since this is full');
+        last.view.$('.todo-content').css('background-color','yellow');
+        $(last.view.el).delay(3000).fadeOut('slow', function() {last.view.render();});
+      } else {
+        Todos.create(this.newAttributes());
+      }
       this.input.val('');
     },
 
