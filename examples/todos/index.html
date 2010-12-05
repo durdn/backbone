@@ -25,7 +25,7 @@
       <div class="content">
 
         <div id="create-todo">
-          <input id="new-todo" placeholder="What needs to be done?" type="text" />
+          <input id="new-todo" placeholder="Enter everything you want to do" type="text" />
           <span class="ui-tooltip-top" style="display:none;">Press Enter to save this task</span>
         </div>
 
@@ -77,10 +77,16 @@
           <span class="word"> discarded.</span>
         </span>
         <span class="page">
-           Current page: <%= page %>
+          <% if (page-1>0) { %>
+            <a href="#p<%= parseInt(page)-1 %>">prev</a>
+          <% } %> 
+          page: <%= pageString %>
+          <% if (page<numPages) { %>
+            <a href="#p<%= parseInt(page)+1 %>">next</a>
+          <% } %> 
         </span>
       <% } %>
-      <% if (done) { %>
+    <% if (false) { %> <!-- was (done) -->
         <span class="todo-clear">
           <a href="#">
             Clear <span class="number-done"><%= done %></span>

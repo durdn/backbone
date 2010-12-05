@@ -80,7 +80,7 @@ $(function(){
 
     // Returns the number of pages needed so far
     numPages: function () {
-        return Math.ceil((Todos.length+1)/3);
+        return Math.ceil((Todos.length+1)/5);
     },
 
     // We keep the Todos in sequential order, despite being saved by unordered
@@ -180,7 +180,8 @@ $(function(){
       this.collection.create({
         content: this.model.get('content'),
         order:   Todos.nextOrder(),
-        status:    'open'
+        status:    'open',
+        page:    Todos.numPages()
       });
       // We toggle it's status
       this.model.toggleDone();
@@ -260,7 +261,9 @@ $(function(){
         done:       Todos.done().length,
         remaining:  Todos.remaining().length,
         discarded:  Todos.discarded().length,
-        page:       this.currentPage + '/' + Todos.numPages()
+        pageString:       this.currentPage + '/' + Todos.numPages(),
+        page: this.currentPage,
+        numPages:   Todos.numPages()
       }));
     },
 
@@ -321,6 +324,7 @@ $(function(){
 
     routes: {
       "p:num":        "pageNum",  // #p3
+      "all":        "showAll",  // #p3
     },
 
     pageNum: function(num) {
@@ -329,6 +333,10 @@ $(function(){
       Todos.each(function(todo) {
         todo.view.checkPage(num);
       });
+    },
+
+    showAll: function() {
+      App.render();
     }
   });
 
