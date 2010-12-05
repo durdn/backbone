@@ -22,14 +22,19 @@ $(function(){
       }
     },
 
-    // Toggle the `done` state of this todo item.
-    toggle: function() {
-      this.save({done: !this.get("done")});
+    // Toggle the `open` state of this todo item.
+    toggleOpen: function() {
+      this.save({status: 'open'});
     },
 
-    // Toggle the `done` state of this todo item.
+    // Toggle the `open` state of this todo item.
+    toggleDone: function() {
+      this.save({status: 'done'});
+    },
+
+    // Toggle the `discarded` state of this todo item.
     toggleDiscarded: function() {
-      this.save({discarded: !this.get("discarded")});
+      this.save({status: 'discarded'});
     },
 
     // Remove this Todo from *localStorage* and delete its view.
@@ -55,17 +60,17 @@ $(function(){
 
     // Filter down the list of all todo items that are finished.
     discarded: function() {
-      return this.filter(function(todo){ return todo.get('discarded'); });
+      return this.filter(function(todo){ return todo.get('status') == 'discarded'; });
     },
 
     // Filter down the list of all todo items that are finished.
     done: function() {
-      return this.filter(function(todo){ return todo.get('done'); });
+      return this.filter(function(todo){ return todo.get('status') == 'done'; });
     },
 
     // Filter down the list to only todo items that are still not finished.
     remaining: function() {
-      return this.without.apply(this, this.done());
+      return this.filter(function(todo){ return (todo.get('status') != 'done' && todo.get('status') != 'discarded'); });
     },
 
     // We keep the Todos in sequential order, despite being saved by unordered
@@ -139,7 +144,7 @@ $(function(){
 
     // Toggle the `"done"` state of the model.
     toggleDone: function() {
-      this.model.toggle();
+      this.model.toggleDone();
     },
 
     // TogglePartiallyDone the `"done"` state of the model.
@@ -148,11 +153,10 @@ $(function(){
       this.collection.create({
         content: this.model.get('content'),
         order:   Todos.nextOrder(),
-        done:    false,
-        discarded: false
+        status:    'open'
       });
       // We toggle it's status
-      this.model.toggle();
+      this.model.toggleDone();
     },
 
     // Switch this view into `"editing"` mode, displaying the input field.
@@ -248,8 +252,7 @@ $(function(){
       return {
         content: this.input.val(),
         order:   Todos.nextOrder(),
-        done:    false,
-        discarded: false
+        status:    'open',
       };
     },
 

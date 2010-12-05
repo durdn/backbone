@@ -53,9 +53,9 @@
     <!-- Templates -->
 
     <script type="text/template" id="item-template">
-      <div class="todo <%= done ? 'done' : '' %><%= discarded ? 'discarded' : '' %>">
+      <div class="todo <%= status %>">
         <div class="display">
-          <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+          <input class="check" type="checkbox" <%= status == 'done' ? 'checked="checked"' : '' %> />
           <div class="todo-content"></div>
           <span class="todo-discard"></span>
           <span class="todo-destroy"></span>
