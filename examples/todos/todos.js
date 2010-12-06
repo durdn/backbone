@@ -143,6 +143,10 @@ $(function(){
     setContent: function() {
       var content = this.model.get('content');
       var page = this.model.get('page');
+      var status = this.model.get('status');
+      if (status == 'discarded') {
+        this.$('.check').hide();
+      }
       this.$('.todo-content').text(content);
       this.input = this.$('.todo-input');
       this.input.bind('blur', this.close);
