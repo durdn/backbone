@@ -203,10 +203,8 @@ $(function(){
       });
 
       if (this.collection.numPages() != this.collection.app.currentPage) {
-        last = this.collection.last();
-        last.view.$('.todo-content').text('entry re-added on last page (' + this.collection.numPages() + ') since this is full');
-        last.view.$('.todo-content').css('background-color','yellow');
-        $(last.view.el).delay(3000).fadeOut('slow', function() {last.view.render();});
+        $('.flash').text('entry added to last page (' + this.collection.numPages() + ') since this is full').css('background-color','yellow');
+        $('.flash').delay(2000).fadeOut('slow', function() { $('.flash').text('').show();});
       } 
       // We toggle it's status
       this.model.toggleDone();
@@ -321,9 +319,8 @@ $(function(){
       if (e.keyCode != 13) return;
       if (Todos.numPages() != this.currentPage) {
         Todos.create(this.newAttributes());
-        last = Todos.last();
         $('.flash').text('entry added to last page (' + Todos.numPages() + ') since this is full').css('background-color','yellow');
-        $('.flash').delay(3000).fadeOut('slow');
+        $('.flash').delay(2000).fadeOut('slow', function() { $('.flash').text('').show();});
       } else {
         Todos.create(this.newAttributes());
       }
