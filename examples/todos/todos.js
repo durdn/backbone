@@ -80,7 +80,7 @@ $(function(){
 
     // Returns the number of pages needed so far
     numPages: function () {
-        return Math.ceil((Todos.length+1)/5);
+        return Math.ceil((Todos.length+1)/20);
     },
 
     // We keep the Todos in sequential order, despite being saved by unordered
@@ -146,6 +146,11 @@ $(function(){
       var status = this.model.get('status');
       if (status == 'discarded') {
         this.$('.check').hide();
+        this.$('.todo-discard').hide();
+      }
+      if (status == 'done') {
+        this.$('.todo-discard').hide();
+        this.$('.todo-readd').hide();
       }
       this.$('.todo-content').text(content);
       this.input = this.$('.todo-input');
