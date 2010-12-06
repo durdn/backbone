@@ -80,7 +80,7 @@ $(function(){
 
     // Returns the number of pages needed so far
     numPages: function () {
-        return Math.ceil((Todos.length+1)/20);
+        return Math.ceil((Todos.length+1)/15);
     },
 
     // We keep the Todos in sequential order, despite being saved by unordered
@@ -133,9 +133,18 @@ $(function(){
 
     // Re-render the contents of the todo item.
     render: function() {
+      if (this.isOnCurrentPage()) {
+        $(this.el).show();
+      } else {
+        $(this.el).hide();
+      }
       $(this.el).html(this.template(this.model.toJSON()));
       this.setContent();
       return this;
+    },
+
+    isOnCurrentPage: function() {
+      return (this.model.get('page') == this.collection.app.currentPage);
     },
 
     // To avoid XSS (not that it would be harmful in this particular app),
@@ -313,9 +322,8 @@ $(function(){
       if (Todos.numPages() != this.currentPage) {
         Todos.create(this.newAttributes());
         last = Todos.last();
-        last.view.$('.todo-content').text('entry added to last page (' + Todos.numPages() + ') since this is full');
-        last.view.$('.todo-content').css('background-color','yellow');
-        $(last.view.el).delay(3000).fadeOut('slow', function() {last.view.render();});
+        $('.flash').text('entry added to last page (' + Todos.numPages() + ') since this is full').css('background-color','yellow');
+        $('.flash').delay(3000).fadeOut('slow');
       } else {
         Todos.create(this.newAttributes());
       }
@@ -348,20 +356,15 @@ $(function(){
   window.PageController = Backbone.Controller.extend({
 
     routes: {
-      "p:num":        "pageNum",  // #p3
-      "all":        "showAll",  // #p3
+      "p:num":        "pageNum"  // #p3
     },
 
     pageNum: function(num) {
       App.currentPage = num;
       App.render();
       Todos.each(function(todo) {
-        todo.view.checkPage(num);
+        todo.view.render();
       });
-    },
-
-    showAll: function() {
-      App.render();
     }
   });
 
